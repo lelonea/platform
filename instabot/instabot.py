@@ -3,31 +3,39 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from data import username, password
 import time
-
-chromedriver = "/usr/bin/chromedriver"
-browser = webdriver.Chrome('/usr/bin/chromedriver')
-browser.get('https://www.instagram.com')
-wait = WebDriverWait(browser, 20)
+from data import username, password
 
 
-def login(u, p):
-    wait.until(EC.element_to_be_clickable((By.NAME, 'username')))
+class InstagramBot:
+    """Instagram Bot on Python sends messages to your clients"""
 
-    username_field = browser.find_element(By.NAME, 'username')
-    username_field.clear()
-    username_field.send_keys(u)
+    # class constructor
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+        self.browser = webdriver.Chrome('/usr/bin/chromedriver')
 
-    password_field = browser.find_element(By.NAME, 'password')
-    password_field.clear()
-    password_field.send_keys(p)
+    # method for closing the browser
+    def close_browser(self):
+        self.browser.close()
+        self.browser.quit()
 
-    password_field.send_keys(Keys.ENTER)
+    # account login method
+    def login(self):
+        self.browser.get('https://www.instagram.com')
+        WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.NAME, 'username')))
+
+        username_field = self.browser.find_element(By.NAME, 'username')
+        username_field.clear()
+        username_field.send_keys(self.username)
+
+        password_field = self.browser.find_element(By.NAME, 'password')
+        password_field.clear()
+        password_field.send_keys(self.password)
+
+        password_field.send_keys(Keys.ENTER)
 
 
-login(username, password)
-time.sleep(10)
-
-browser.close()
-browser.quit()
+first = InstagramBot(username, password)
+first.login()
