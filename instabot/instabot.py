@@ -1,9 +1,11 @@
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import time
+import random
 from data import username, password
 
 
@@ -36,6 +38,11 @@ class InstagramBot:
 
         password_field.send_keys(Keys.ENTER)
 
+    # method for opening direct
+    def open_direct(self):
+        WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR("//*[text()='Messenger']"))))
+        direct_button = self.browser.find_element_by_css_selector("[aria-label=Messenger]")
+        direct_button.click()
+        time.sleep(5)
 
-first = InstagramBot(username, password)
-first.login()
+
